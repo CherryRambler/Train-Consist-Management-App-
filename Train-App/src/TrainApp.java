@@ -1,34 +1,33 @@
-import java.util.LinkedList;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 public class TrainApp {
     public static void main(String[] args) {
         System.out.println("=== Train Consist Management App ===");
-        System.out.println("--- UC4: Maintaining Physical Bogie Sequence ---");
+        System.out.println("--- UC5: Preserving Order with Unique Bogies ---");
 
-        LinkedList<String> trainConsist = new LinkedList<>();
 
-        trainConsist.add("Engine");
-        trainConsist.add("Sleeper");
-        trainConsist.add("AC Coach");
-        trainConsist.add("Cargo");
-        trainConsist.add("Guard");
+        Set<String> trainFormation = new LinkedHashSet<>();
 
-        System.out.println("Initial Sequence: " + trainConsist);
+        trainFormation.add("Engine");
+        trainFormation.add("Sleeper");
+        trainFormation.add("Cargo");
+        trainFormation.add("Guard");
 
-        System.out.println("\n--- Operational Update: Attaching Pantry Car ---");
-        trainConsist.add(2, "Pantry Car");
-        System.out.println("Sequence after adding Pantry: " + trainConsist);
+        System.out.println("Initial Formation attached: " + trainFormation);
 
-        System.out.println("\n--- Maintenance: Detaching Head and Tail ---");
-        String removedFirst = trainConsist.removeFirst();
-        String removedLast = trainConsist.removeLast();
+        System.out.println("\n--- Safety Check: Attempting to attach duplicate 'Sleeper' ---");
+        boolean isAdded = trainFormation.add("Sleeper");
 
-        System.out.println("Detached: " + removedFirst + " (Front) and " + removedLast + " (Rear)");
+        if (!isAdded) {
+            System.out.println("System Alert: Duplicate bogie 'Sleeper' rejected! Integrity maintained.");
+        }
 
-        System.out.println("\n--- Final Train Formation ---");
-        System.out.println("Final Consist: " + trainConsist);
-        System.out.println("Total Bogies: " + trainConsist.size());
+        System.out.println("\n--- Final Verified Train Formation ---");
+        System.out.println("Consist Sequence: " + trainFormation);
 
-        System.out.println("\nUC4 Operations Completed. Sequence maintained via Chaining.");
+        System.out.println("Final Bogie Count: " + trainFormation.size());
+
+        System.out.println("\nUC5 Operations Completed. Order preserved and Duplicates eliminated.");
     }
 }
