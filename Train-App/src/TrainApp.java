@@ -1,35 +1,30 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class TrainApp {
     public static void main(String[] args) {
         System.out.println("=== Train Consist Management App ===");
+        System.out.println("--- UC3: Tracking Unique Bogie IDs ---");
 
-        List<String> passengerBogies = new ArrayList<>();
-        System.out.println("Initial Bogie Count: " + passengerBogies.size());
+        Set<String> bogieIds = new HashSet<>();
 
-        System.out.println("\n--- Adding Passenger Bogies ---");
+        System.out.println("Registering Bogies: BG101, BG102, BG101, BG103...");
 
-        passengerBogies.add("Sleeper");
-        passengerBogies.add("AC Chair");
-        passengerBogies.add("First Class");
+        bogieIds.add("BG101");
+        bogieIds.add("BG102");
+        bogieIds.add("BG101");
+        bogieIds.add("BG103");
+        bogieIds.add("BG102");
 
-        System.out.println("Current Consist: " + passengerBogies);
+        System.out.println("\n--- Registration Summary ---");
 
-        System.out.println("\n--- Removing AC Chair ---");
-        passengerBogies.remove("AC Chair");
-        System.out.println("Consist after removal: " + passengerBogies);
+        System.out.println("Unique Bogie IDs in System: " + bogieIds);
+        System.out.println("Total Unique Count: " + bogieIds.size());
 
-        System.out.print("\nChecking for Sleeper bogie... ");
-        if (passengerBogies.contains("Sleeper")) {
-            System.out.println("Result: Sleeper is present in the consist.");
-        } else {
-            System.out.println("Result: Sleeper not found.");
+        if (bogieIds.size() < 5) {
+            System.out.println("System Note: Duplicate IDs were detected and automatically rejected.");
         }
 
-        System.out.println("\nFinal Consist State: " + passengerBogies);
-        System.out.println("Final Bogie Count: " + passengerBogies.size());
-
-        System.out.println("\nUC2 Operations Completed successfully.");
+        System.out.println("\nUC3 Operations Completed. Integrity maintained.");
     }
 }
