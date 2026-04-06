@@ -1,30 +1,34 @@
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedList;
 
 public class TrainApp {
     public static void main(String[] args) {
         System.out.println("=== Train Consist Management App ===");
-        System.out.println("--- UC3: Tracking Unique Bogie IDs ---");
+        System.out.println("--- UC4: Maintaining Physical Bogie Sequence ---");
 
-        Set<String> bogieIds = new HashSet<>();
+        LinkedList<String> trainConsist = new LinkedList<>();
 
-        System.out.println("Registering Bogies: BG101, BG102, BG101, BG103...");
+        trainConsist.add("Engine");
+        trainConsist.add("Sleeper");
+        trainConsist.add("AC Coach");
+        trainConsist.add("Cargo");
+        trainConsist.add("Guard");
 
-        bogieIds.add("BG101");
-        bogieIds.add("BG102");
-        bogieIds.add("BG101");
-        bogieIds.add("BG103");
-        bogieIds.add("BG102");
+        System.out.println("Initial Sequence: " + trainConsist);
 
-        System.out.println("\n--- Registration Summary ---");
+        System.out.println("\n--- Operational Update: Attaching Pantry Car ---");
+        trainConsist.add(2, "Pantry Car");
+        System.out.println("Sequence after adding Pantry: " + trainConsist);
 
-        System.out.println("Unique Bogie IDs in System: " + bogieIds);
-        System.out.println("Total Unique Count: " + bogieIds.size());
+        System.out.println("\n--- Maintenance: Detaching Head and Tail ---");
+        String removedFirst = trainConsist.removeFirst();
+        String removedLast = trainConsist.removeLast();
 
-        if (bogieIds.size() < 5) {
-            System.out.println("System Note: Duplicate IDs were detected and automatically rejected.");
-        }
+        System.out.println("Detached: " + removedFirst + " (Front) and " + removedLast + " (Rear)");
 
-        System.out.println("\nUC3 Operations Completed. Integrity maintained.");
+        System.out.println("\n--- Final Train Formation ---");
+        System.out.println("Final Consist: " + trainConsist);
+        System.out.println("Total Bogies: " + trainConsist.size());
+
+        System.out.println("\nUC4 Operations Completed. Sequence maintained via Chaining.");
     }
 }
