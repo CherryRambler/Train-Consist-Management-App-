@@ -1,33 +1,31 @@
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TrainApp {
     public static void main(String[] args) {
         System.out.println("=== Train Consist Management App ===");
-        System.out.println("--- UC5: Preserving Order with Unique Bogies ---");
+        System.out.println("--- UC6: Mapping Bogies to Capacity ---");
 
 
-        Set<String> trainFormation = new LinkedHashSet<>();
+        Map<String, Integer> bogieCapacityMap = new HashMap<>();
 
-        trainFormation.add("Engine");
-        trainFormation.add("Sleeper");
-        trainFormation.add("Cargo");
-        trainFormation.add("Guard");
 
-        System.out.println("Initial Formation attached: " + trainFormation);
+        bogieCapacityMap.put("Sleeper", 72);
+        bogieCapacityMap.put("AC Chair", 56);
+        bogieCapacityMap.put("First Class", 24);
+        bogieCapacityMap.put("Cargo", 1000);
 
-        System.out.println("\n--- Safety Check: Attempting to attach duplicate 'Sleeper' ---");
-        boolean isAdded = trainFormation.add("Sleeper");
+        System.out.println("Bogie capacities successfully registered.\n");
 
-        if (!isAdded) {
-            System.out.println("System Alert: Duplicate bogie 'Sleeper' rejected! Integrity maintained.");
+        System.out.println("Quick Lookup: Capacity of 'Sleeper' is " + bogieCapacityMap.get("Sleeper") + " seats.");
+
+
+        System.out.println("\n--- Train Capacity Registry Summary ---");
+        for (Map.Entry<String, Integer> entry : bogieCapacityMap.entrySet()) {
+            System.out.println("Bogie Type: " + entry.getKey() + " | Capacity: " + entry.getValue());
         }
 
-        System.out.println("\n--- Final Verified Train Formation ---");
-        System.out.println("Consist Sequence: " + trainFormation);
-
-        System.out.println("Final Bogie Count: " + trainFormation.size());
-
-        System.out.println("\nUC5 Operations Completed. Order preserved and Duplicates eliminated.");
+        System.out.println("\nTotal Bogie Types Registered: " + bogieCapacityMap.size());
+        System.out.println("UC6 Operations Completed. Attribute mapping successful.");
     }
 }
