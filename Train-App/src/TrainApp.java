@@ -1,6 +1,7 @@
 import java.util.*;
 import java.util.stream.Collectors;
 
+// Base Bogie class
 class Bogie {
     String type;
     int capacity;
@@ -8,10 +9,6 @@ class Bogie {
     public Bogie(String type, int capacity) {
         this.type = type;
         this.capacity = capacity;
-    }
-
-    public String getType() {
-        return type;
     }
 
     public int getCapacity() {
@@ -35,19 +32,16 @@ public class TrainApp {
         bogies.add(new Bogie("Sleeper", 80));
         bogies.add(new Bogie("AC Chair", 75));
 
-        System.out.println("Original Bogie List:");
+        System.out.println("Bogie List:");
         bogies.forEach(System.out::println);
 
-        Map<String, List<Bogie>> groupedBogies = bogies.stream()
-                .collect(Collectors.groupingBy(Bogie::getType));
+        int totalSeats = bogies.stream()
+                .map(b -> b.getCapacity())
+                .reduce(0, Integer::sum);
 
-        System.out.println("\nGrouped Bogies by Type:");
-        groupedBogies.forEach((type, list) -> {
-            System.out.println("\n" + type + ":");
-            list.forEach(System.out::println);
-        });
+        System.out.println("\nTotal Seating Capacity: " + totalSeats);
 
-        System.out.println("\nOriginal List After Grouping (Unchanged):");
+        System.out.println("\nOriginal List After Aggregation (Unchanged):");
         bogies.forEach(System.out::println);
     }
 }
