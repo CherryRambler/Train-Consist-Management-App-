@@ -1,34 +1,50 @@
 import java.util.*;
 
-class InvalidCapacityException extends Exception {
-    public InvalidCapacityException(String message) {
+class CargoSafetyException extends RuntimeException {
+    public CargoSafetyException(String message) {
         super(message);
     }
 }
 
-class PassengerBogie {
+class GoodsBogie {
     private String type;
-    private int capacity;
+    private String cargo;
 
-    public PassengerBogie(String type, int capacity) throws InvalidCapacityException {
-        if (capacity <= 0) {
-            throw new InvalidCapacityException("Capacity must be greater than zero");
-        }
+    public GoodsBogie(String type) {
         this.type = type;
-        this.capacity = capacity;
     }
 
     public String getType() {
         return type;
     }
 
-    public int getCapacity() {
-        return capacity;
+    public String getCargo() {
+        return cargo;
+    }
+
+    public void assignCargo(String cargo) {
+        try {
+            if (type.equalsIgnoreCase("Rectangular") &&
+                    cargo.equalsIgnoreCase("Petroleum")) {
+
+                throw new CargoSafetyException(
+                        "Unsafe Assignment: Rectangular bogie cannot carry Petroleum");
+            }
+
+            this.cargo = cargo;
+            System.out.println("✅ Cargo assigned successfully: " + cargo);
+
+        } catch (CargoSafetyException e) {
+            System.out.println("❌ Error: " + e.getMessage());
+
+        } finally {
+            System.out.println("ℹ️ Cargo assignment attempt completed for bogie type: " + type);
+        }
     }
 
     @Override
     public String toString() {
-        return type + " | Capacity: " + capacity;
+        return "Type: " + type + " | Cargo: " + (cargo == null ? "None" : cargo);
     }
 }
 
@@ -36,50 +52,26 @@ public class TrainApp {
 
     public static void main(String[] args) {
 
-        Scanner scanner = new Scanner(System.in);
-        List<PassengerBogie> bogieList = new ArrayList<>();
-
-        System.out.print("Enter number of passenger bogies: ");
-        int n = scanner.nextInt();
-        scanner.nextLine(); // consume newline
-
-        for (int i = 0; i < n; i++) {
-            try {
-                System.out.println("\nEnter details for Bogie " + (i + 1));
-
-                System.out.print("Enter Bogie Type (Sleeper/AC/First Class): ");
-                String type = scanner.nextLine();
-
-                System.out.print("Enter Capacity: ");
-                int capacity = scanner.nextInt();
-                scanner.nextLine(); // consume newline
-
-                PassengerBogie bogie = new PassengerBogie(type, capacity);
-                bogieList.add(bogie);
-
-                System.out.println("✅ Bogie added successfully!");
-
-            } catch (InvalidCapacityException e) {
-                System.out.println("❌ Error: " + e.getMessage());
-                System.out.println("Bogie NOT added. Please enter valid data.");
-            } catch (Exception e) {
-                System.out.println("❌ Invalid input. Try again.");
-                scanner.nextLine();
-            }
-        }
+        // Create bogies
+        GoodsBogie b1 = new GoodsBogie("Cylindrical");
+        GoodsBogie b2 = new GoodsBogie("Rectangular");
 
 
-        System.out.println("\n--- Valid Passenger Bogies ---");
+        System.out.println("\nAssigning Petroleum to Cylindrical:");
+        b1.assignCargo("Petroleum");
 
-        if (bogieList.isEmpty()) {
-            System.out.println("No valid bogies added.");
-        } else {
-            for (PassengerBogie b : bogieList) {
-                System.out.println(b);
-            }
-        }
 
-        scanner.close();
-        System.out.println("\nProgram executed successfully.");
+        System.out.println("\nAssigning Petroleum to Rectangular:");
+        b2.assignCargo("Petroleum");
+
+        System.out.println("\nAssigning Coal to Rectangular:");
+        b2.assignCargo("Coal");
+
+
+        System.out.println("\n--- Final Bogie Status ---");
+        System.out.println(b1);
+        System.out.println(b2);
+
+        System.out.println("\nProgram continues safely after handling exceptions.");
     }
 }
