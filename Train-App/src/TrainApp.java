@@ -10,6 +10,10 @@ class Bogie {
         this.capacity = capacity;
     }
 
+    public String getType() {
+        return type;
+    }
+
     public int getCapacity() {
         return capacity;
     }
@@ -34,14 +38,16 @@ public class TrainApp {
         System.out.println("Original Bogie List:");
         bogies.forEach(System.out::println);
 
-        List<Bogie> filteredBogies = bogies.stream()
-                .filter(b -> b.getCapacity() > 60)
-                .collect(Collectors.toList());
+        Map<String, List<Bogie>> groupedBogies = bogies.stream()
+                .collect(Collectors.groupingBy(Bogie::getType));
 
-        System.out.println("\nFiltered Bogies (Capacity > 60):");
-        filteredBogies.forEach(System.out::println);
+        System.out.println("\nGrouped Bogies by Type:");
+        groupedBogies.forEach((type, list) -> {
+            System.out.println("\n" + type + ":");
+            list.forEach(System.out::println);
+        });
 
-        System.out.println("\nOriginal List After Filtering (Unchanged):");
+        System.out.println("\nOriginal List After Grouping (Unchanged):");
         bogies.forEach(System.out::println);
     }
 }
