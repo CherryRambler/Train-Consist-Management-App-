@@ -1,13 +1,14 @@
-import java.util.*;
-import java.util.stream.*;
+class Bogie {
+    private String type;
+    private int capacity;
 
-class PassengerBogie {
-    String type;
-    int capacity;
-
-    public PassengerBogie(String type, int capacity) {
+    public Bogie(String type, int capacity) {
         this.type = type;
         this.capacity = capacity;
+    }
+
+    public String getType() {
+        return type;
     }
 
     public int getCapacity() {
@@ -19,21 +20,26 @@ class PassengerBogie {
         return type + " (" + capacity + ")";
     }
 }
+import java.util.*;
+import java.util.stream.Collectors;
 
-public class TrainApp {
+public class TrainConsistManagement {
 
     public static void main(String[] args) {
 
-        List<PassengerBogie> bogies = new ArrayList<>();
+        // 1. Create large dataset
+        List<Bogie> bogies = new ArrayList<>();
 
         for (int i = 0; i < 100000; i++) {
-            bogies.add(new PassengerBogie("Sleeper", (i % 100) + 1));
+            bogies.add(new Bogie("Sleeper", 72));
+            bogies.add(new Bogie("AC Chair", 60));
+            bogies.add(new Bogie("First Class", 40));
         }
 
         long startLoop = System.nanoTime();
 
-        List<PassengerBogie> loopResult = new ArrayList<>();
-        for (PassengerBogie b : bogies) {
+        List<Bogie> loopResult = new ArrayList<>();
+        for (Bogie b : bogies) {
             if (b.getCapacity() > 60) {
                 loopResult.add(b);
             }
@@ -45,23 +51,18 @@ public class TrainApp {
 
         long startStream = System.nanoTime();
 
-        List<PassengerBogie> streamResult = bogies.stream()
+        List<Bogie> streamResult = bogies.stream()
                 .filter(b -> b.getCapacity() > 60)
                 .collect(Collectors.toList());
 
         long endStream = System.nanoTime();
         long streamTime = endStream - startStream;
 
-        System.out.println("Loop Result Count   : " + loopResult.size());
-        System.out.println("Stream Result Count : " + streamResult.size());
 
-        System.out.println("Loop Execution Time   : " + loopTime + " ns");
-        System.out.println("Stream Execution Time : " + streamTime + " ns");
+        System.out.println("Loop Time: " + loopTime + " ns");
+        System.out.println("Stream Time: " + streamTime + " ns");
 
-        if (loopResult.size() == streamResult.size()) {
-            System.out.println("Both approaches produce SAME results");
-        } else {
-            System.out.println("Mismatch in results!");
-        }
+        System.out.println("Loop Result Size: " + loopResult.size());
+        System.out.println("Stream Result Size: " + streamResult.size());
     }
 }
