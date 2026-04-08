@@ -23,7 +23,7 @@ public class Bogie {
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class TrainConsistManagement {
+public class TrainApp{
 
     public static void main(String[] args) {
 
