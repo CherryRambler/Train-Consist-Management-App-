@@ -1,21 +1,22 @@
 import java.util.*;
 import java.util.stream.*;
 
-class GoodsBogie {
+class PassengerBogie {
     String type;
-    String cargo;
+    int capacity;
 
-    public GoodsBogie(String type, String cargo) {
+    public PassengerBogie(String type, int capacity) {
         this.type = type;
-        this.cargo = cargo;
+        this.capacity = capacity;
     }
 
-    public String getType() {
-        return type;
+    public int getCapacity() {
+        return capacity;
     }
 
-    public String getCargo() {
-        return cargo;
+    @Override
+    public String toString() {
+        return type + " (" + capacity + ")";
     }
 }
 
@@ -23,24 +24,44 @@ public class TrainApp {
 
     public static void main(String[] args) {
 
-        List<GoodsBogie> bogies = Arrays.asList(
-                new GoodsBogie("Cylindrical", "Petroleum"),
-                new GoodsBogie("Open", "Coal"),
-                new GoodsBogie("Box", "Grain"),
-                new GoodsBogie("Cylindrical", "Petroleum")
-        );
+        List<PassengerBogie> bogies = new ArrayList<>();
 
-        boolean isSafe = bogies.stream()
-                .allMatch(bogie ->
-                        // Rule: Cylindrical bogie → only Petroleum allowed
-                        !bogie.getType().equalsIgnoreCase("Cylindrical")
-                                || bogie.getCargo().equalsIgnoreCase("Petroleum")
-                );
+        for (int i = 0; i < 100000; i++) {
+            bogies.add(new PassengerBogie("Sleeper", (i % 100) + 1));
+        }
 
-        if (isSafe) {
-            System.out.println("Train is SAFETY COMPLIANT");
+        long startLoop = System.nanoTime();
+
+        List<PassengerBogie> loopResult = new ArrayList<>();
+        for (PassengerBogie b : bogies) {
+            if (b.getCapacity() > 60) {
+                loopResult.add(b);
+            }
+        }
+
+        long endLoop = System.nanoTime();
+        long loopTime = endLoop - startLoop;
+
+
+        long startStream = System.nanoTime();
+
+        List<PassengerBogie> streamResult = bogies.stream()
+                .filter(b -> b.getCapacity() > 60)
+                .collect(Collectors.toList());
+
+        long endStream = System.nanoTime();
+        long streamTime = endStream - startStream;
+
+        System.out.println("Loop Result Count   : " + loopResult.size());
+        System.out.println("Stream Result Count : " + streamResult.size());
+
+        System.out.println("Loop Execution Time   : " + loopTime + " ns");
+        System.out.println("Stream Execution Time : " + streamTime + " ns");
+
+        if (loopResult.size() == streamResult.size()) {
+            System.out.println("Both approaches produce SAME results");
         } else {
-            System.out.println("Train is NOT SAFE");
+            System.out.println("Mismatch in results!");
         }
     }
 }
