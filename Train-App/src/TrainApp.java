@@ -1,5 +1,4 @@
 import java.util.*;
-import java.util.stream.*;
 
 class GoodsBogie {
     String type;
@@ -21,6 +20,14 @@ class GoodsBogie {
 
 public class TrainApp {
 
+    public static boolean isTrainSafe(List<GoodsBogie> bogies) {
+        return bogies.stream()
+                .allMatch(bogie ->
+                        !bogie.getType().equalsIgnoreCase("Cylindrical")
+                                || bogie.getCargo().equalsIgnoreCase("Petroleum")
+                );
+    }
+
     public static void main(String[] args) {
 
         List<GoodsBogie> bogies = Arrays.asList(
@@ -30,14 +37,7 @@ public class TrainApp {
                 new GoodsBogie("Cylindrical", "Petroleum")
         );
 
-        boolean isSafe = bogies.stream()
-                .allMatch(bogie ->
-                        // Rule: Cylindrical bogie → only Petroleum allowed
-                        !bogie.getType().equalsIgnoreCase("Cylindrical")
-                                || bogie.getCargo().equalsIgnoreCase("Petroleum")
-                );
-
-        if (isSafe) {
+        if (isTrainSafe(bogies)) {
             System.out.println("Train is SAFETY COMPLIANT");
         } else {
             System.out.println("Train is NOT SAFE");
